@@ -320,7 +320,9 @@ function App() {
       <ConfettiEffect trigger={showConfetti} />
 
       <header className="navbar">
-        <h1 className="logo">WATCHLIST <span>STANDOFF</span></h1>
+        <div className="logo-container">
+          <img src="/logo.png" alt="Watchlist Standoff" className="logo-img" />
+        </div>
 
         <div className="navbar-controls">
           <ThemeToggle />

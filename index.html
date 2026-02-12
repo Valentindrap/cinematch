@@ -1,42 +1,46 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#00e054" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Watchlist Standoff" />
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Encuentra películas en común con tus amigos de Letterboxd. Compara watchlists y descubre qué ver juntos." />
-    <meta name="keywords" content="películas, letterboxd, cine, watchlist, amigos, películas en común" />
-    <meta name="author" content="Watchlist Standoff" />
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Watchlist Standoff - Encuentra películas con tus amigos" />
-    <meta property="og:description" content="Compara watchlists de Letterboxd y descubre qué película ver juntos" />
-    <meta property="og:type" content="website" />
-    
-    <title>Watchlist Standoff - Encuentra películas con tus amigos</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-    
-    <!-- Service Worker Registration -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Service Worker registrado:', reg.scope))
-            .catch(err => console.log('Service Worker error:', err))
-        })
-      }
-    </script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#00e054" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Watchlist Standoff" />
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Encuentra películas en común con tus amigos de Letterboxd. Compara watchlists y descubre qué ver juntos." />
+  <meta name="keywords" content="películas, letterboxd, cine, watchlist, amigos, películas en común" />
+  <meta name="author" content="Watchlist Standoff" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Watchlist Standoff - Encuentra películas con tus amigos" />
+  <meta property="og:description" content="Compara watchlists de Letterboxd y descubre qué película ver juntos" />
+  <meta property="og:type" content="website" />
+
+  <title>Watchlist Standoff - Encuentra películas con tus amigos</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('Service Worker registrado:', reg.scope))
+          .catch(err => console.log('Service Worker error:', err))
+      })
+    }
+  </script>
+</body>
+
 </html>
