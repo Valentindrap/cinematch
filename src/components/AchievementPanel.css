@@ -1,0 +1,119 @@
+.achievement-panel {
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+}
+
+.achievement-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.achievement-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.achievement-count {
+    margin-left: auto;
+    padding: 0.4rem 0.9rem;
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    border-radius: 20px;
+    color: #ffd700;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.achievement-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.achievement-item.unlocked {
+    background: rgba(0, 224, 84, 0.1);
+    border-color: rgba(0, 224, 84, 0.3);
+}
+
+.achievement-item.unlocked:hover {
+    background: rgba(0, 224, 84, 0.15);
+    border-color: rgba(0, 224, 84, 0.5);
+}
+
+.achievement-item.locked {
+    opacity: 0.5;
+    filter: grayscale(0.8);
+}
+
+.achievement-item-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.achievement-item.unlocked .achievement-item-icon {
+    filter: drop-shadow(0 0 10px rgba(0, 224, 84, 0.5));
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 10px rgba(0, 224, 84, 0.5));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 20px rgba(0, 224, 84, 0.8));
+    }
+}
+
+.achievement-item-info {
+    flex: 1;
+}
+
+.achievement-item-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.25rem;
+}
+
+.achievement-item.unlocked .achievement-item-name {
+    color: #00e054;
+}
+
+.achievement-item-desc {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .achievement-grid {
+        grid-template-columns: 1fr;
+    }
+}

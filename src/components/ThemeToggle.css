@@ -1,0 +1,79 @@
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: #fff;
+}
+
+.theme-options {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.theme-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.theme-btn.active {
+    background: #00e054;
+    border-color: #00e054;
+    transform: scale(1.15);
+    box-shadow: 0 0 15px rgba(0, 224, 84, 0.5);
+}
+
+/* Theme Variants */
+[data-theme="dark"] {
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --accent-color: #ffffff;
+    --accent-glow: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="retro"] {
+    --bg-primary: #2b1b17;
+    --bg-secondary: #3d241f;
+    --accent-color: #ff6b35;
+    --accent-glow: rgba(255, 107, 53, 0.3);
+}
+
+[data-theme="neon"] {
+    --bg-primary: #0d0221;
+    --bg-secondary: #1a0942;
+    --accent-color: #ff006e;
+    --accent-glow: rgba(255, 0, 110, 0.5);
+}
+
+[data-theme="retro"] .glass {
+    background: rgba(255, 107, 53, 0.1);
+    border-color: rgba(255, 107, 53, 0.3);
+}
+
+[data-theme="neon"] .glass {
+    background: rgba(255, 0, 110, 0.1);
+    border-color: rgba(255, 0, 110, 0.3);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+[data-theme="dark"] .glass {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}

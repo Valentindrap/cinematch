@@ -1,0 +1,229 @@
+.filter-panel {
+    margin: 1.5rem 0;
+}
+
+.filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 224, 84, 0.3);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.filter-toggle:hover {
+    background: rgba(0, 224, 84, 0.1);
+    border-color: #00e054;
+}
+
+.filter-toggle.active {
+    background: rgba(0, 224, 84, 0.15);
+    border-color: #00e054;
+}
+
+.filter-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: #00e054;
+    color: #0a0e17;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.filter-toggle .arrow {
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.filter-toggle .arrow.up {
+    transform: rotate(180deg);
+}
+
+.filter-content {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #00e054;
+    font-weight: 500;
+}
+
+.reset-filters {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 59, 92, 0.2);
+    border: 1px solid rgba(255, 59, 92, 0.5);
+    border-radius: 8px;
+    color: #ff3b5c;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reset-filters:hover {
+    background: rgba(255, 59, 92, 0.3);
+    border-color: #ff3b5c;
+}
+
+.filter-section {
+    margin-bottom: 1.5rem;
+}
+
+.filter-section h4 {
+    margin: 0 0 0.75rem 0;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.genre-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.genre-chip {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: #fff;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.genre-chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.genre-chip.active {
+    background: #00e054;
+    border-color: #00e054;
+    color: #0a0e17;
+    font-weight: 600;
+}
+
+.range-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.range-inputs input[type="range"] {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.range-inputs input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #00e054;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.range-inputs input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(0, 224, 84, 0.5);
+}
+
+.range-inputs input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #00e054;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.range-inputs input[type="range"]::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(0, 224, 84, 0.5);
+}
+
+.duration-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.duration-buttons button {
+    flex: 1;
+    min-width: fit-content;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.duration-buttons button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.duration-buttons button.active {
+    background: #00e054;
+    border-color: #00e054;
+    color: #0a0e17;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .filter-content {
+        padding: 1rem;
+    }
+
+    .duration-buttons {
+        flex-direction: column;
+    }
+
+    .duration-buttons button {
+        width: 100%;
+    }
+}
