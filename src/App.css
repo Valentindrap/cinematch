@@ -660,16 +660,39 @@ body {
 }
 
 /* ========== RESPONSIVE ========== */
-@media (max-width: 1200px) {
-  .game-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
+.game-grid {
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
 
-  .side-panel.left,
-  .side-panel.right {
-    display: none;
-  }
+.side-panel.left {
+  order: 2;
+  /* Put stats below the wheel on mobile */
+}
+
+.side-panel.right {
+  order: 3;
+  /* Put history at the bottom */
+}
+
+.main-stage {
+  order: 1;
+  /* Keep wheel at the top */
+  min-height: 400px;
+}
+
+.side-panel {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.history-list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  max-height: 300px;
 }
 
 @media (max-width: 900px) {

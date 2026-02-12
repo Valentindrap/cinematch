@@ -1,6 +1,6 @@
 {
-    "name": "Cinematch",
-    "short_name": "Cinematch",
+    "name": "Watchlist Standoff",
+    "short_name": "Watchlist",
     "description": "Encuentra películas en común con tus amigos de Letterboxd",
     "start_url": "/",
     "display": "standalone",

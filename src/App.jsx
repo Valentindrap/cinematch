@@ -320,7 +320,7 @@ function App() {
       <ConfettiEffect trigger={showConfetti} />
 
       <header className="navbar">
-        <h1 className="logo">CINE<span>MATCH</span></h1>
+        <h1 className="logo">WATCHLIST <span>STANDOFF</span></h1>
 
         <div className="navbar-controls">
           <ThemeToggle />

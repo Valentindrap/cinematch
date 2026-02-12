@@ -139,20 +139,7 @@
     font-weight: 600;
 }
 
-@media (max-width: 768px) {
-    .stats-modal {
-        padding: 1.5rem;
-        max-height: 95vh;
-    }
-
-    .stats-header h2 {
-        font-size: 1.5rem;
-    }
-
-    .stats-summary {
-        grid-template-columns: 1fr;
-    }
-
+@media (max-width: 900px) {
     .stats-charts {
         grid-template-columns: 1fr;
     }
@@ -160,9 +147,75 @@
     .chart-container {
         min-width: 100%;
     }
+}
+
+@media (max-width: 768px) {
+    .stats-modal-overlay {
+        padding: 0.5rem;
+    }
+
+    .stats-modal {
+        padding: 1.5rem;
+        max-height: 95vh;
+        border-radius: 16px;
+    }
+
+    .stats-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .stats-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .stats-summary {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
 
     .stat-value {
         font-size: 2rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+    }
+
+    .chart-container {
+        padding: 1rem;
+    }
+
+    .chart-container h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-modal {
+        padding: 1rem;
+    }
+
+    .stats-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .stats-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-value {
+        font-size: 1.75rem;
+    }
+
+    .stat-icon {
+        width: 36px;
+        height: 36px;
     }
 }
 

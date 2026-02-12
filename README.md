@@ -1,4 +1,4 @@
-# Cinematch
+# Watchlist Standoff
 
 Una aplicación web para encontrar películas en común con tus amigos de Letterboxd.
 
