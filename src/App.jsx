@@ -504,7 +504,7 @@ function App() {
                           </div>
                         </div>
 
-                        <div className="win-btns">
+                        <div className="win-btns" onClick={(e) => e.stopPropagation()}>
                           <button className="start-btn" onClick={spin}>
                             <RotateCw size={18} /> Repetir
                           </button>
