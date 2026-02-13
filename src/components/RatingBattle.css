@@ -213,3 +213,16 @@
     letter-spacing: 1px;
     margin-top: 0.5rem;
 }
+
+.csv-upload-btn {
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.csv-upload-btn:hover {
+    transform: scale(1.1);
+}

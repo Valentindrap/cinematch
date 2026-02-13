@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react'
-import { Users, Swords } from 'lucide-react'
-import { fetchUserRatings } from '../api/letterboxdRatings'
+import { Users, Swords, Upload } from 'lucide-react'
+import { fetchUserRatings, parseCSV } from '../api/letterboxdRatings'
 import { processBattleData, enrichWithPosters } from '../utils/battleLogic'
 import { RatingList } from './RatingList'
 import './RatingBattle.css'
@@ -14,8 +14,37 @@ export function RatingBattle() {
     const [processedMovies, setProcessedMovies] = useState([])
     const [sortMode, setSortMode] = useState('diff-desc') // 'diff-desc', 'avg-desc'
     const [stats, setStats] = useState(null)
+    const [csvData, setCsvData] = useState({}) // { username: ratings[] }
 
     const addDriver = () => setUsernames([...usernames, ''])
+
+    // Handle CSV Upload
+    const handleFileUpload = (e, index) => {
+        const file = e.target.files[0]
+        if (!file) return
+
+        const reader = new FileReader()
+        reader.onload = (event) => {
+            const text = event.target.result
+            const ratings = parseCSV(text)
+
+            if (ratings.length > 0) {
+                // Determine username from filename if possible, else prompt or use placeholder
+                // But here we are attaching it to a specific input index
+                const name = usernames[index] || "CSV_USER"
+
+                setCsvData(prev => ({
+                    ...prev,
+                    [index]: ratings
+                }))
+
+                showSuccessToast(`Cargados ${ratings.length} ratings del archivo`)
+            } else {
+                showErrorToast("No se encontraron ratings en el CSV")
+            }
+        }
+        reader.readAsText(file)
+    }
 
     const handleStartBattle = async () => {
         const activeUsers = usernames.filter(u => u.trim() !== '')
@@ -30,9 +59,22 @@ export function RatingBattle() {
         try {
             const allRatings = []
 
-            // 1. Fetch ratings for all users
-            for (const user of activeUsers) {
-                const ratings = await fetchUserRatings(user)
+            // 1. Fetch ratings for all users (or use CSV)
+            for (let i = 0; i < activeUsers.length; i++) {
+                const user = activeUsers[i]
+
+                // Get original index to find CSV data
+                const originalIndex = usernames.indexOf(user)
+
+                let ratings = []
+
+                if (csvData[originalIndex]) {
+                    console.log(`Using CSV data for ${user}`)
+                    ratings = csvData[originalIndex]
+                } else {
+                    ratings = await fetchUserRatings(user)
+                }
+
                 if (ratings.length === 0) {
                     showErrorToast(`No se encontraron ratings para @${user}`)
                     setLoading(false)
@@ -109,8 +151,7 @@ export function RatingBattle() {
             {!battleData && !loading && (
                 <div className="battle-setup">
                     <p style={{ textAlign: 'center', marginBottom: '2rem', color: '#888' }}>
-                        Analizando historial completo.
-                        <b>Nota:</b> Puede tardar unos segundos por página.
+                        Usa tu usuario de Letterboxd o sube tu <b>ratings.csv</b> para mayor precisión.
                     </p>
 
                     {usernames.map((u, i) => (
@@ -125,6 +166,16 @@ export function RatingBattle() {
                                     setUsernames(n)
                                 }}
                             />
+
+                            <label className="csv-upload-btn" title="Subir ratings.csv (Export de Letterboxd)">
+                                <Upload size={14} color={csvData[i] ? '#00e054' : '#888'} />
+                                <input
+                                    type="file"
+                                    accept=".csv"
+                                    style={{ display: 'none' }}
+                                    onChange={(e) => handleFileUpload(e, i)}
+                                />
+                            </label>
                         </div>
                     ))}
 

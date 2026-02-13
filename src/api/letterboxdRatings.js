@@ -123,3 +123,53 @@ function parseRatings(html, ratingsArray) {
 
     return addedCount > 0
 }
+
+export function parseCSV(csvText) {
+    const lines = csvText.split('\n')
+    const ratings = []
+
+    // Header usually: Date,Name,Year,Letterboxd URI,Rating
+    // We need to identify columns
+    const headers = lines[0].toLowerCase().split(',')
+    const nameIdx = headers.findIndex(h => h.includes('name'))
+    const ratingIdx = headers.findIndex(h => h.includes('rating'))
+    const yearIdx = headers.findIndex(h => h.includes('year'))
+
+    if (nameIdx === -1 || ratingIdx === -1) return []
+
+    for (let i = 1; i < lines.length; i++) {
+        // Simple regex split to handle commmas inside quotes? 
+        // For simplicity, assuming standard generic CSV. Letterboxd usually quotes names with commas.
+        // A robust parser is better, but simple split might work for most
+
+        // Match CSV robustly:
+        const row = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || lines[i].split(',')
+
+        // Clean up quotes
+        const clean = (val) => val ? val.replace(/^"|"$/g, '').trim() : ''
+
+        if (lines[i].trim() === '') continue
+
+        // Basic split if regex failed or simple row
+        const cols = lines[i].includes('"')
+            ? lines[i].match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
+            : lines[i].split(',')
+
+        if (!cols || cols.length < ratingIdx) continue
+
+        const title = clean(cols[nameIdx])
+        const rating = parseFloat(clean(cols[ratingIdx]))
+        const year = clean(cols[yearIdx])
+
+        if (title && !isNaN(rating)) {
+            ratings.push({
+                title: title,
+                slug: title.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, ''),
+                rating: rating,
+                year: year || "N/A"
+            })
+        }
+    }
+
+    return ratings
+}
