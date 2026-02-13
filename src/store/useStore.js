@@ -121,7 +121,6 @@ export const useStore = create(
                 soundEnabled: state.soundEnabled,
                 achievements: state.achievements,
                 userStats: state.userStats,
-                watchedMovies: state.watchedMovies,
                 accessibility: state.accessibility,
             })
         }
