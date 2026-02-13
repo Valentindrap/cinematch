@@ -12,6 +12,7 @@ import { ThemeToggle } from './components/ThemeToggle'
 import { ShareButton } from './components/ShareButton'
 import { AchievementPanel } from './components/AchievementPanel'
 import { showAchievementToast, showSuccessToast, showErrorToast } from './components/AchievementToast'
+import { PrivacyPolicyModal } from './components/PrivacyPolicyModal'
 
 // Import utilities and APIs
 import { useStore } from './store/useStore'
@@ -49,6 +50,7 @@ function App() {
   const [selectedMovie, setSelectedMovie] = useState(null)
   const [showStats, setShowStats] = useState(false)
   const [showAchievements, setShowAchievements] = useState(false)
+  const [showPrivacy, setShowPrivacy] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [genres, setGenres] = useState([
     // Fallback genres in case API fails
@@ -571,6 +573,19 @@ function App() {
           statistics={statistics}
           onClose={() => setShowStats(false)}
         />
+      )}
+
+      {/* Footer */}
+      <footer className="footer">
+        <button className="privacy-link" onClick={() => setShowPrivacy(true)}>
+          Política de Privacidad
+        </button>
+        <p>© 2026 Watchlist Standoff</p>
+      </footer>
+
+      {/* Privacy Policy Modal */}
+      {showPrivacy && (
+        <PrivacyPolicyModal onClose={() => setShowPrivacy(false)} />
       )}
     </div>
   )
