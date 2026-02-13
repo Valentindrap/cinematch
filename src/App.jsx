@@ -9,7 +9,9 @@ import { MovieModal } from './components/MovieModal'
 import { StatsDashboard } from './components/StatsDashboard'
 import { ConfettiEffect } from './components/ConfettiEffect'
 import { ShareButton } from './components/ShareButton'
-import { showSuccessToast, showErrorToast } from './components/AchievementToast'
+import { AchievementPanel } from './components/AchievementPanel'
+import { RatingBattle } from './components/RatingBattle'
+import { showAchievementToast, showSuccessToast, showErrorToast } from './components/AchievementToast'
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal'
 import { SEOContent } from './components/SEOContent'
 
@@ -46,8 +48,11 @@ function App() {
   const [scanStatus, setScanStatus] = useState({ user: '', page: 0, total: 0 })
   const [selectedMovie, setSelectedMovie] = useState(null)
   const [showStats, setShowStats] = useState(false)
+  const [showAchievements, setShowAchievements] = useState(false)
   const [showPrivacy, setShowPrivacy] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
+  const [viewMode, setViewMode] = useState('standard') // 'standard' or 'battle'
+
   const [genres, setGenres] = useState([
     // Fallback genres in case API fails
     { id: 28, name: 'Acción' },
@@ -319,206 +324,232 @@ function App() {
         </div>
 
         <div className="status">● Online</div>
+
+        <button
+          onClick={() => setViewMode(viewMode === 'standard' ? 'battle' : 'standard')}
+          style={{
+            position: 'absolute',
+            top: '6rem',
+            right: '2rem',
+            zIndex: 20,
+            background: viewMode === 'battle' ? 'var(--neon-pink)' : 'transparent',
+            border: '1px solid var(--neon-pink)',
+            color: 'white',
+            padding: '0.5rem 1rem',
+            fontSize: '0.8rem',
+            fontWeight: '900',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-mono)'
+          }}
+        >
+          {viewMode === 'standard' ? '⚔️ BATTLE MODE' : '↩ EXIT BATTLE'}
+        </button>
       </header>
 
       <main className="viewport">
-        {/* Setup Screen */}
-        {!loading && moviesData.length === 0 && (
-          <div className="setup-card glass">
-            <h2>Configura la búsqueda</h2>
-
-            <div className="tabs">
-              <button
-                className={mode === 'match' ? 'active' : ''}
-                onClick={() => setMode('match')}
-              >
-                Match
-              </button>
-              <button
-                className={mode === 'single' ? 'active' : ''}
-                onClick={() => setMode('single')}
-              >
-                Todo
-              </button>
-            </div>
-
-            {usernames.map((u, i) => (
-              <div key={i} className="input-box glass">
-                <Users size={16} />
-                <input
-                  value={u}
-                  placeholder="Usuario de Letterboxd"
-                  onChange={(e) => {
-                    const n = [...usernames]
-                    n[i] = e.target.value
-                    setUsernames(n)
-                  }}
-                />
-              </div>
-            ))}
-
-            <button
-              className="add-btn"
-              onClick={() => setUsernames([...usernames, ''])}
-            >
-              + Amigo
-            </button>
-
-            <button className="start-btn" onClick={runAnalysis}>
-              ANALIZAR
-            </button>
-
-            <div className="keyboard-hints">
-              <Keyboard size={14} />
-              <span>Atajos: Space=Girar | R=Reset | S=Stats | M=Sonido</span>
-            </div>
-          </div>
-        )}
-
-        {/* Loading State */}
-        {loading && (
-          <div className="loading-state">
-            <Loader2 className="spinner" size={60} />
-            <h2>
-              {scanStatus.user === 'Enriqueciendo datos'
-                ? 'Obteniendo detalles de películas...'
-                : 'Escaneando Watchlists...'}
-            </h2>
-            <p>
-              {scanStatus.user === 'Enriqueciendo datos'
-                ? <>Procesando <b>{scanStatus.page}</b> de <b>{scanStatus.total}</b> películas</>
-                : <>Leyendo a <b>@{scanStatus.user}</b> (Página {scanStatus.page})</>}
-            </p>
-            <div className="progress-bar-bg">
-              <div
-                className="progress-fill"
-                style={{
-                  width: scanStatus.total
-                    ? `${(scanStatus.page / scanStatus.total) * 100}%`
-                    : `${(scanStatus.page / 30) * 100}%`
-                }}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Main Game View */}
-        {moviesData.length > 0 && !loading && (
+        {viewMode === 'battle' ? (
+          <RatingBattle />
+        ) : (
           <>
-            <FilterPanel
-              filters={filters}
-              onFilterChange={setFilters}
-              genres={genres}
-              totalMovies={moviesData.length}
-              filteredCount={filteredMovies.length}
-            />
+            {/* Setup Screen */}
+            {!loading && moviesData.length === 0 && (
+              <div className="setup-card glass">
+                <h2>Configura la búsqueda</h2>
 
-            <div className="game-grid">
-              {/* Left Panel */}
-              <aside className="side-panel left">
-                <div className="stat-bubble glass">
-                  <Info size={16} color="#00e054" />
-                  <span>{filteredMovies.length} películas</span>
+                <div className="tabs">
+                  <button
+                    className={mode === 'match' ? 'active' : ''}
+                    onClick={() => setMode('match')}
+                  >
+                    Match
+                  </button>
+                  <button
+                    className={mode === 'single' ? 'active' : ''}
+                    onClick={() => setMode('single')}
+                  >
+                    Todo
+                  </button>
                 </div>
+
+                {usernames.map((u, i) => (
+                  <div key={i} className="input-box glass">
+                    <Users size={16} />
+                    <input
+                      value={u}
+                      placeholder="Usuario de Letterboxd"
+                      onChange={(e) => {
+                        const n = [...usernames]
+                        n[i] = e.target.value
+                        setUsernames(n)
+                      }}
+                    />
+                  </div>
+                ))}
 
                 <button
-                  className="stats-btn glass"
-                  onClick={() => setShowStats(true)}
-                  title="Ver Estadísticas (S)"
+                  className="add-btn"
+                  onClick={() => setUsernames([...usernames, ''])}
                 >
-                  <BarChart3 size={20} />
-                  Estadísticas
+                  + Amigo
                 </button>
-              </aside>
 
-              {/* Center Stage */}
-              <section className="main-stage">
-                <AnimatePresence mode="wait">
-                  {!winner && !isSpinning && (
-                    <button className="giant-spin" onClick={spin}>
-                      GIRAR
-                    </button>
-                  )}
+                <button className="start-btn" onClick={runAnalysis}>
+                  ANALIZAR
+                </button>
 
-                  {isSpinning && (
-                    <h2 className="rolling-text">{rouletteTitle}</h2>
-                  )}
+                <div className="keyboard-hints">
+                  <Keyboard size={14} />
+                  <span>Atajos: Space=Girar | R=Reset | S=Stats | M=Sonido</span>
+                </div>
+              </div>
+            )}
 
-                  {winner && (
-                    <motion.div
-                      initial={{ y: 50, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      className="win-card glass"
-                      onClick={() => setSelectedMovie(winner)}
+            {/* Loading State */}
+            {loading && (
+              <div className="loading-state">
+                <Loader2 className="spinner" size={60} />
+                <h2>
+                  {scanStatus.user === 'Enriqueciendo datos'
+                    ? 'Obteniendo detalles de películas...'
+                    : 'Escaneando Watchlists...'}
+                </h2>
+                <p>
+                  {scanStatus.user === 'Enriqueciendo datos'
+                    ? <>Procesando <b>{scanStatus.page}</b> de <b>{scanStatus.total}</b> películas</>
+                    : <>Leyendo a <b>@{scanStatus.user}</b> (Página {scanStatus.page})</>}
+                </p>
+                <div className="progress-bar-bg">
+                  <div
+                    className="progress-fill"
+                    style={{
+                      width: scanStatus.total
+                        ? `${(scanStatus.page / scanStatus.total) * 100}%`
+                        : `${(scanStatus.page / 30) * 100}%`
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Main Game View */}
+            {moviesData.length > 0 && !loading && (
+              <>
+                <FilterPanel
+                  filters={filters}
+                  onFilterChange={setFilters}
+                  genres={genres}
+                  totalMovies={moviesData.length}
+                  filteredCount={filteredMovies.length}
+                />
+
+                <div className="game-grid">
+                  {/* Left Panel */}
+                  <aside className="side-panel left">
+                    <div className="stat-bubble glass">
+                      <Info size={16} color="#00e054" />
+                      <span>{filteredMovies.length} películas</span>
+                    </div>
+
+                    <button
+                      className="stats-btn glass"
+                      onClick={() => setShowStats(true)}
+                      title="Ver Estadísticas (S)"
                     >
-                      <div className="poster">
-                        {winner.poster ? (
-                          <img src={winner.poster} alt={winner.title} />
-                        ) : (
-                          <div className="no-img">?</div>
-                        )}
-                      </div>
+                      <BarChart3 size={20} />
+                      Estadísticas
+                    </button>
+                  </aside>
 
-                      <div className="details">
-                        <div className="meta-pills">
-                          <span className="pill year">{winner.year}</span>
-                          <span className="pill rating">⭐ {winner.rating}</span>
-                        </div>
+                  {/* Center Stage */}
+                  <section className="main-stage">
+                    <AnimatePresence mode="wait">
+                      {!winner && !isSpinning && (
+                        <button className="giant-spin" onClick={spin}>
+                          GIRAR
+                        </button>
+                      )}
 
-                        <h2 className="title">{winner.title}</h2>
+                      {isSpinning && (
+                        <h2 className="rolling-text">{rouletteTitle}</h2>
+                      )}
 
-                        {winner.overview && (
-                          <p className="overview">{winner.overview.slice(0, 150)}...</p>
-                        )}
+                      {winner && (
+                        <motion.div
+                          initial={{ y: 50, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          className="win-card glass"
+                          onClick={() => setSelectedMovie(winner)}
+                        >
+                          <div className="poster">
+                            {winner.poster ? (
+                              <img src={winner.poster} alt={winner.title} />
+                            ) : (
+                              <div className="no-img">?</div>
+                            )}
+                          </div>
 
-                        <div className="owners">
-                          <p>Encontrada en:</p>
-                          <div className="chips">
-                            {winner.owners.map(o => (
-                              <span key={o} className="user-chip">@{o}</span>
-                            ))}
+                          <div className="details">
+                            <div className="meta-pills">
+                              <span className="pill year">{winner.year}</span>
+                              <span className="pill rating">⭐ {winner.rating}</span>
+                            </div>
+
+                            <h2 className="title">{winner.title}</h2>
+
+                            {winner.overview && (
+                              <p className="overview">{winner.overview.slice(0, 150)}...</p>
+                            )}
+
+                            <div className="owners">
+                              <p>Encontrada en:</p>
+                              <div className="chips">
+                                {winner.owners.map(o => (
+                                  <span key={o} className="user-chip">@{o}</span>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="win-btns" onClick={(e) => e.stopPropagation()}>
+                              <button className="start-btn" onClick={spin}>
+                                <RotateCw size={18} /> Repetir
+                              </button>
+                              <button className="reset-btn" onClick={resetApp}>
+                                Nueva búsqueda
+                              </button>
+                              <ShareButton movie={winner} />
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </section>
+
+                  {/* Right Panel - History */}
+                  <aside className="side-panel right">
+                    <h3>HISTORIAL</h3>
+                    <div className="history-list">
+                      {history.map((h, i) => (
+                        <div
+                          key={i}
+                          className="h-card glass"
+                          onClick={() => setSelectedMovie(h)}
+                        >
+                          {h.poster ? (
+                            <img src={h.poster} alt={h.title} />
+                          ) : (
+                            <div className="h-no-img">?</div>
+                          )}
+                          <div className="h-info">
+                            <p>{h.title}</p>
+                            <span>{h.year} • ⭐{h.rating}</span>
                           </div>
                         </div>
-
-                        <div className="win-btns" onClick={(e) => e.stopPropagation()}>
-                          <button className="start-btn" onClick={spin}>
-                            <RotateCw size={18} /> Repetir
-                          </button>
-                          <button className="reset-btn" onClick={resetApp}>
-                            Nueva búsqueda
-                          </button>
-                          <ShareButton movie={winner} />
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </section>
-
-              {/* Right Panel - History */}
-              <aside className="side-panel right">
-                <h3>HISTORIAL</h3>
-                <div className="history-list">
-                  {history.map((h, i) => (
-                    <div
-                      key={i}
-                      className="h-card glass"
-                      onClick={() => setSelectedMovie(h)}
-                    >
-                      {h.poster ? (
-                        <img src={h.poster} alt={h.title} />
-                      ) : (
-                        <div className="h-no-img">?</div>
-                      )}
-                      <div className="h-info">
-                        <p>{h.title}</p>
-                        <span>{h.year} • ⭐{h.rating}</span>
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  </aside>
                 </div>
-              </aside>
-            </div>
+              </>
+            )}
           </>
         )}
       </main>

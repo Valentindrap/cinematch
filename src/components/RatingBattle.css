@@ -1,0 +1,215 @@
+.battle-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.battle-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.battle-title {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--neon-pink);
+    /* Using pink for battle mode */
+    text-transform: uppercase;
+    margin: 0;
+    text-shadow: 0 0 20px rgba(255, 0, 60, 0.4);
+}
+
+.battle-setup {
+    background: var(--glass);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0;
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.battle-setup::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    height: 2px;
+    background: var(--neon-pink);
+    box-shadow: 0 0 10px var(--neon-pink);
+}
+
+.battle-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-card);
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.sort-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.sort-btn {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.sort-btn.active {
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+    background: rgba(255, 0, 60, 0.1);
+}
+
+.battle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.battle-row {
+    display: grid;
+    /* Grid template will be set dynamically based on user count */
+    gap: 1rem;
+    align-items: center;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    transition: all 0.2s;
+}
+
+.battle-row:hover {
+    border-color: var(--neon-pink);
+    transform: translateX(5px);
+}
+
+.movie-col {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    overflow: hidden;
+}
+
+.movie-poster-thumb {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+    background: #222;
+    flex-shrink: 0;
+}
+
+.movie-title {
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rating-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.rating-val {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.rating-stars {
+    font-size: 0.7rem;
+    color: #ffd700;
+    letter-spacing: -2px;
+}
+
+.diff-col {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.diff-high {
+    color: var(--neon-pink);
+}
+
+.diff-low {
+    color: var(--neon-lime);
+}
+
+.battle-start-btn {
+    background: var(--neon-pink);
+    color: white;
+    width: 100%;
+    padding: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    transition: all 0.3s;
+}
+
+.battle-start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(255, 0, 60, 0.4);
+}
+
+.loading-battle {
+    text-align: center;
+    padding: 4rem;
+    color: var(--neon-pink);
+    font-family: var(--font-mono);
+    animation: pulse 1.5s infinite;
+}
+
+/* Stats Summary */
+.battle-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--glass);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.stat-val {
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    font-family: var(--font-mono);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+}
