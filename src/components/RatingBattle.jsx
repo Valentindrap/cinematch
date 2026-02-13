@@ -34,7 +34,7 @@ export function RatingBattle() {
             for (const user of activeUsers) {
                 const ratings = await fetchUserRatings(user)
                 if (ratings.length === 0) {
-                    showErrorToast(`No se encontraron ratings recientes para @${user} (RSS)`)
+                    showErrorToast(`No se encontraron ratings para @${user}`)
                     setLoading(false)
                     return
                 }
@@ -109,8 +109,8 @@ export function RatingBattle() {
             {!battleData && !loading && (
                 <div className="battle-setup">
                     <p style={{ textAlign: 'center', marginBottom: '2rem', color: '#888' }}>
-                        Compara gustos recientes.
-                        <b>Nota:</b> Solo se analizan las últimas 50 actividades (RSS).
+                        Analizando historial completo.
+                        <b>Nota:</b> Puede tardar unos segundos por página.
                     </p>
 
                     {usernames.map((u, i) => (
