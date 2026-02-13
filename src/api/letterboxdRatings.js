@@ -1,6 +1,7 @@
 
 // API to fetch user ratings from Letterboxd
-// Scrapes the /films/ page which shows all rated movies
+// Uses RSS feed to avoid robust anti-scraping blocks on the /films/ pages
+// Limitation: helper returns only the last ~50 items of activity
 
 export async function fetchUserRatings(username) {
     const user = username.trim().toLowerCase()
@@ -8,59 +9,65 @@ export async function fetchUserRatings(username) {
 
     let ratings = []
 
-    // determine proxy URL base
+    // RSS Feed URL
+    const rssUrl = `https://letterboxd.com/${user}/rss/`
+
+    // Proxy logic: Try Vercel proxy first, corsproxy.io as backup
     const proxy = import.meta.env.PROD
         ? '/api/proxy?url='
-        : 'http://localhost:8010/proxy/'
+        : 'https://corsproxy.io/?'
 
-    // We'll fetch up to 50 pages to be safe, but break if we hit 404 or empty
-    // Letterboxd films page: https://letterboxd.com/{username}/films/page/{i}/
+    // Encode the URL for the proxy
+    const targetUrl = import.meta.env.PROD
+        ? `${proxy}${encodeURIComponent(rssUrl)}`
+        : `${proxy}${encodeURIComponent(rssUrl)}`
 
-    for (let i = 1; i <= 50; i++) {
-        // Add subtle delay to avoid rate limiting
-        if (i > 1) await new Promise(r => setTimeout(r, 1000))
+    try {
+        console.log(`Fetching RSS for ${user} via ${targetUrl}`)
+        const response = await fetch(targetUrl)
+        if (!response.ok) throw new Error(`Network response was not ok: ${response.status}`)
 
-        try {
-            const letterboxdUrl = `https://letterboxd.com/${user}/films/page/${i}/`
-            const proxyUrl = import.meta.env.PROD
-                ? `${proxy}${encodeURIComponent(letterboxdUrl)}`
-                : `${proxy}${user}/films/page/${i}/`
+        const xmlText = await response.text()
+        const parser = new DOMParser()
+        const xmlDoc = parser.parseFromString(xmlText, "text/xml")
 
-            const response = await fetch(proxyUrl)
-            if (!response.ok) break
+        const items = xmlDoc.querySelectorAll("item")
 
-            const html = await response.text()
-            const doc = new DOMParser().parseFromString(html, 'text/html')
+        items.forEach(item => {
+            // Namespace handling can be tricky in DOMParser, usually tag names include prefix or not
+            // We check both just in case
+            const title =
+                item.getElementsByTagName("letterboxd:filmTitle")[0]?.textContent ||
+                item.getElementsByTagName("filmTitle")[0]?.textContent
 
-            // Letterboxd uses .poster-container inside .poster-list
-            // The rating is usually in a span class="rating" or data attribute
-            // Actually on the /films/ page, the rating is often in the poster-container data attributes
-            // specifically data-owner-rating (0-10)
+            const ratingEl =
+                item.getElementsByTagName("letterboxd:memberRating")[0] ||
+                item.getElementsByTagName("memberRating")[0]
 
-            const items = doc.querySelectorAll('.poster-container')
-            if (items.length === 0) break
+            const year =
+                item.getElementsByTagName("letterboxd:filmYear")[0]?.textContent ||
+                item.getElementsByTagName("filmYear")[0]?.textContent
 
-            items.forEach(item => {
-                const img = item.querySelector('img')
-                const title = img?.alt || "N/A"
-                const filmSlug = item.getAttribute('data-film-slug') // crucial for matching
-                const ratingAttr = item.getAttribute('data-owner-rating')
+            // Only add if it's a rated film
+            if (title && ratingEl) {
+                const rating = parseFloat(ratingEl.textContent)
 
-                // Only include if rated
-                if (ratingAttr && ratingAttr !== "0") {
+                // Avoid duplicates
+                if (!ratings.some(r => r.title === title)) {
                     ratings.push({
                         title: title,
-                        slug: filmSlug,
-                        rating: parseInt(ratingAttr) / 2, // Convert 0-10 to 0-5
-                        year: "N/A" // We might not get year easily, but that's okay for now
+                        slug: title.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, ''),
+                        rating: rating,
+                        year: year || "N/A"
                     })
                 }
-            })
+            }
+        })
 
-        } catch (e) {
-            console.error(`Error fetching page ${i} for ${user}`, e)
-            break
-        }
+        console.log(`Parsed ${ratings.length} ratings for ${user}`)
+
+    } catch (e) {
+        console.error(`Error fetching RSS for ${user}`, e)
     }
 
     return ratings
