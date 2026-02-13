@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
 import { Loader2, Users, RotateCw, Info, BarChart3, Volume2, VolumeX, Keyboard, Coffee } from 'lucide-react'
@@ -24,6 +24,40 @@ import { calculateStatistics } from './utils/statistics'
 
 
 import './App.css'
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught an error", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '2rem', textAlign: 'center', color: 'white' }}>
+          <h2>Algo salió mal en el Campo de Batalla 💥</h2>
+          <p>{this.state.error?.toString()}</p>
+          <button
+            onClick={() => this.setState({ hasError: false })}
+            style={{ marginTop: '1rem', padding: '0.5rem 1rem', background: 'var(--neon-pink)', border: 'none', borderRadius: '4px', color: 'white' }}
+          >
+            Reintentar
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 
 
@@ -348,7 +382,9 @@ function App() {
 
       <main className="viewport">
         {viewMode === 'battle' ? (
-          <RatingBattle />
+          <ErrorBoundary>
+            <RatingBattle />
+          </ErrorBoundary>
         ) : (
           <>
             {/* Setup Screen */}
