@@ -21,7 +21,10 @@ import { soundManager } from './utils/sounds'
 import { calculateStatistics } from './utils/statistics'
 import { checkAchievements } from './utils/achievements'
 
+
 import './App.css'
+
+import { Analytics } from "@vercel/analytics/next"
 
 function App() {
   const {
