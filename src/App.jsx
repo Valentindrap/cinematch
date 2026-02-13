@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
-import { Loader2, Users, RotateCw, Info, BarChart3, Volume2, VolumeX, Keyboard } from 'lucide-react'
+import { Loader2, Users, RotateCw, Info, BarChart3, Volume2, VolumeX, Keyboard, Coffee } from 'lucide-react'
 
 // Import components
 import { FilterPanel } from './components/FilterPanel'
@@ -577,6 +577,15 @@ function App() {
 
       {/* Footer */}
       <footer className="footer">
+        <a
+          href="https://link.mercadopago.com.ar/valentindrap"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="donate-btn"
+        >
+          <Coffee size={18} />
+          Invítanos un cafecito
+        </a>
         <button className="privacy-link" onClick={() => setShowPrivacy(true)}>
           Política de Privacidad
         </button>
