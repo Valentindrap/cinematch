@@ -30,27 +30,28 @@
 
 .modal-close {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 1.5rem;
+    right: 1.5rem;
     z-index: 10;
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 59, 92, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     color: #fff;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 59, 92, 0.4), 0 0 20px rgba(255, 59, 92, 0.2);
 }
 
 .modal-close:hover {
-    background: rgba(255, 59, 92, 0.3);
-    border-color: #ff3b5c;
-    color: #ff3b5c;
-    transform: rotate(90deg);
+    background: #ff3b5c;
+    border-color: #fff;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 59, 92, 0.6), 0 0 30px rgba(255, 59, 92, 0.4);
 }
 
 .modal-backdrop {
@@ -79,28 +80,31 @@
 .modal-body {
     display: flex;
     gap: 2rem;
-    padding: 2rem;
+    padding: 2.5rem;
     overflow-y: auto;
     flex: 1;
     min-height: 0;
 }
 
 .modal-body::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 .modal-body::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 4px;
+    border-radius: 5px;
+    margin: 8px 0;
 }
 
 .modal-body::-webkit-scrollbar-thumb {
-    background: rgba(0, 224, 84, 0.3);
-    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(0, 224, 84, 0.5), rgba(0, 224, 84, 0.3));
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
 }
 
 .modal-body::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 224, 84, 0.5);
+    background: linear-gradient(180deg, rgba(0, 224, 84, 0.7), rgba(0, 224, 84, 0.5));
 }
 
 .modal-poster {
@@ -134,19 +138,21 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
     color: #fff;
     min-width: 0;
 }
 
 .modal-info h2 {
     margin: 0;
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.25rem;
+    font-weight: 800;
     background: linear-gradient(135deg, #00e054 0%, #00a8ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
 }
 
 .modal-meta {
@@ -159,11 +165,13 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 0.6rem 1.1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    font-size: 0.95rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .modal-genres {
@@ -184,15 +192,16 @@
 
 .modal-director,
 .modal-cast {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .modal-director strong,
 .modal-cast strong {
     color: #00e054;
     margin-right: 0.5rem;
+    font-weight: 700;
 }
 
 .modal-overview {
@@ -200,16 +209,17 @@
 }
 
 .modal-overview h3 {
-    margin: 0 0 0.75rem 0;
-    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
     color: #00e054;
+    font-weight: 700;
 }
 
 .modal-overview p {
     margin: 0;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.95rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.05rem;
 }
 
 .modal-owners {

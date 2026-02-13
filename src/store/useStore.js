@@ -114,7 +114,7 @@ export const useStore = create(
             }),
         }),
         {
-            name: 'cinematch-storage',
+            name: 'watchlist-standoff-storage',
             partialize: (state) => ({
                 groups: state.groups,
                 theme: state.theme,

@@ -8,11 +8,10 @@ import { FilterPanel } from './components/FilterPanel'
 import { MovieModal } from './components/MovieModal'
 import { StatsDashboard } from './components/StatsDashboard'
 import { ConfettiEffect } from './components/ConfettiEffect'
-import { ThemeToggle } from './components/ThemeToggle'
 import { ShareButton } from './components/ShareButton'
-import { AchievementPanel } from './components/AchievementPanel'
-import { showAchievementToast, showSuccessToast, showErrorToast } from './components/AchievementToast'
+import { showSuccessToast, showErrorToast } from './components/AchievementToast'
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal'
+import { SEOContent } from './components/SEOContent'
 
 // Import utilities and APIs
 import { useStore } from './store/useStore'
@@ -20,7 +19,6 @@ import { tmdbAPI } from './api/tmdb'
 import { movieFilters, gameModes } from './utils/movieFilters'
 import { soundManager } from './utils/sounds'
 import { calculateStatistics } from './utils/statistics'
-import { checkAchievements } from './utils/achievements'
 
 
 import './App.css'
@@ -41,7 +39,6 @@ function App() {
     winner, setWinner,
     loading, setLoading,
     soundEnabled, setSoundEnabled,
-    achievements, unlockAchievement,
   } = useStore()
 
   const [isSpinning, setIsSpinning] = useState(false)
@@ -49,7 +46,6 @@ function App() {
   const [scanStatus, setScanStatus] = useState({ user: '', page: 0, total: 0 })
   const [selectedMovie, setSelectedMovie] = useState(null)
   const [showStats, setShowStats] = useState(false)
-  const [showAchievements, setShowAchievements] = useState(false)
   const [showPrivacy, setShowPrivacy] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [genres, setGenres] = useState([
@@ -105,23 +101,19 @@ function App() {
         case 's':
           if (moviesData.length > 0) setShowStats(true)
           break
-        case 'a':
-          setShowAchievements(!showAchievements)
-          break
         case 'm':
           setSoundEnabled(!soundEnabled)
           break
         case 'escape':
           setSelectedMovie(null)
           setShowStats(false)
-          setShowAchievements(false)
           break
       }
     }
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [filteredMovies, isSpinning, moviesData, showAchievements, soundEnabled])
+  }, [filteredMovies, isSpinning, moviesData, soundEnabled])
 
   // Update sound manager
   useEffect(() => {
@@ -289,20 +281,6 @@ function App() {
   const handleMarkWatched = (movie) => {
     addWatchedMovie(movie)
     showSuccessToast('¡Película marcada como vista!')
-
-    // Check for new achievements
-    const newAchievements = checkAchievements(
-      [...watchedMovies, movie],
-      useStore.getState().groups
-    )
-
-    newAchievements.forEach(achId => {
-      if (!achievements.includes(achId)) {
-        unlockAchievement(achId)
-        setTimeout(() => showAchievementToast(achId), 500)
-        soundManager.playAchievement()
-      }
-    })
   }
 
   const resetApp = () => {
@@ -330,22 +308,12 @@ function App() {
         </div>
 
         <div className="navbar-controls">
-          <ThemeToggle />
-
           <button
             className={`sound-toggle ${soundEnabled ? 'active' : ''}`}
             onClick={() => setSoundEnabled(!soundEnabled)}
-            title="Toggle Sound"
+            title="Toggle Sound (M)"
           >
             {soundEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
-          </button>
-
-          <button
-            className="achievements-toggle"
-            onClick={() => setShowAchievements(!showAchievements)}
-            title="Achievements (A)"
-          >
-            🏆 {achievements.length}
           </button>
         </div>
 
@@ -401,7 +369,7 @@ function App() {
 
             <div className="keyboard-hints">
               <Keyboard size={14} />
-              <span>Atajos: Space=Girar | R=Reset | S=Stats | A=Logros | M=Sonido</span>
+              <span>Atajos: Space=Girar | R=Reset | S=Stats | M=Sonido</span>
             </div>
           </div>
         )}
@@ -550,11 +518,6 @@ function App() {
                 </div>
               </aside>
             </div>
-
-            {/* Achievements Panel */}
-            {showAchievements && (
-              <AchievementPanel unlockedAchievements={achievements} />
-            )}
           </>
         )}
       </main>
@@ -591,6 +554,9 @@ function App() {
         </button>
         <p>© 2026 Watchlist Standoff</p>
       </footer>
+
+      {/* SEO Content Section */}
+      <SEOContent />
 
       {/* Privacy Policy Modal */}
       {showPrivacy && (
