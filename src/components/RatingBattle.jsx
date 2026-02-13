@@ -34,7 +34,7 @@ export function RatingBattle() {
             for (const user of activeUsers) {
                 const ratings = await fetchUserRatings(user)
                 if (ratings.length === 0) {
-                    showErrorToast(`No se encontraron ratings para @${user}`)
+                    showErrorToast(`No se encontraron ratings recientes para @${user} (RSS)`)
                     setLoading(false)
                     return
                 }
@@ -109,8 +109,8 @@ export function RatingBattle() {
             {!battleData && !loading && (
                 <div className="battle-setup">
                     <p style={{ textAlign: 'center', marginBottom: '2rem', color: '#888' }}>
-                        Compara gustos y encuentra las mayores discordias.
-                        Solo se mostrarán las películas que TODOS hayan calificado.
+                        Compara gustos recientes.
+                        <b>Nota:</b> Solo se analizan las últimas 50 actividades (RSS).
                     </p>
 
                     {usernames.map((u, i) => (
