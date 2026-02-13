@@ -133,11 +133,6 @@ function App() {
     for (let i = 1; i <= 30; i++) {
       setScanStatus({ user: username, page: i, total: 0 })
 
-      // Add delay between requests to avoid rate limiting (except first request)
-      if (i > 1) {
-        await new Promise(resolve => setTimeout(resolve, 1500))
-      }
-
       try {
         const letterboxdUrl = `https://letterboxd.com/${user}/watchlist/page/${i}/`
         const proxyUrl = import.meta.env.PROD

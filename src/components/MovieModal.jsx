@@ -134,13 +134,6 @@ export function MovieModal({ movie, onClose, onMarkWatched }) {
                                     <ExternalLink size={18} />
                                     Abrir en Letterboxd
                                 </button>
-                                <button className="action-btn success" onClick={() => {
-                                    onMarkWatched(movie)
-                                    onClose()
-                                }}>
-                                    <Star size={18} />
-                                    Marcar como vista
-                                </button>
                             </div>
                         </div>
                     </div>
