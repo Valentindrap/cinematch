@@ -20,7 +20,6 @@ import { movieFilters, gameModes } from './utils/movieFilters'
 import { soundManager } from './utils/sounds'
 import { calculateStatistics } from './utils/statistics'
 import { checkAchievements } from './utils/achievements'
-import { Analytics } from "@vercel/analytics/next"
 
 
 import './App.css'
